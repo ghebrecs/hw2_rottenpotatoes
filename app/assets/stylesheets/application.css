@@ -27,7 +27,7 @@ h1 {
 h1.title {
   margin: 0 0 1em;
   padding: 10px;
-  background-color: yellow;
+  background-color: orange;
   color: white;
   border-bottom: 4px solid gold;
   font-size: 2em;
@@ -58,4 +58,9 @@ form label {
   line-height: 25px;
   font-weight: bold;
   color: maroon;
+}
+
+table#movies th.hilite { 
+
+ background-color: yellow;  
 }
