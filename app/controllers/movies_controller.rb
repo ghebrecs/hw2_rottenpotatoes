@@ -7,14 +7,39 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
-    if params[:sort] == "title"  
-      @movies.sort!{|a,b| a.title.downcase <=> b.title.downcase}
-    elsif params[:sort] == "release_date"
-      @movies.sort!{|a,b| a.release_date<=> b.release_date}
+    
+    @all_ratings = ['G','PG','PG-13','R','NC-17']
+    @movies = []
+    @sort = params[:sort]
+    if params[:ratings] == nil 
+
+      @movies = Movie.all
+
+    else 
+    
+      Movie.all.each { |m|  
+
+        if params[:ratings][m.rating] == "1" 
+
+          @movies << m   
+        
+        end 
+      }  
+
     end 
 
-  end
+    if params[:sort] == "title"  
+      
+       @movies.sort!{|x,y| x.title.downcase <=> y.title.downcase}
+    
+    elsif params[:sort] == "release_date"
+    
+       @movies.sort!{|x,y| x.release_date <=> y.release_date}
+    
+    end 
+
+  end 
+
 
   def new
     # default: render 'new' template
