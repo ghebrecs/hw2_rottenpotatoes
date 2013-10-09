@@ -35,7 +35,7 @@ class MoviesController < ApplicationController
 
       @ratings = session[:filter] ? session[:filter] : {}
       @hilite = session[:sort] ? session[:sort] : nil
-      redirect_to movies_path(@hilite, @ratings)
+      #redirect_to movies_path(@hilite, @ratings)
     end
 
     @selected = @ratings.keys
