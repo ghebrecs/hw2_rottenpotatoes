@@ -9,17 +9,17 @@
   = hidden_field_tag(:sort,@sort)
   = submit_tag "Refresh"
 
+-# link_to creates a link tag of the given name using a url created by the set of options - # => <a href="/movie Title/1">movietitle</a>
 
 %table#movies
   %thead
     %tr
-      -# %th{:id => "title_header", :class =>("title" == params[:sort]) ? "hilite" : nil}= link_to('Movie Title',{:action => "index", :sort => 'title'})
+ 
       %th{params[:sort] == "title" ? {:class => "hilite"} : {}}= link_to "Movie Title", movies_path(:sort => "title", :ratings => params[:ratings]), :id => "title_header"
 
       %th Rating
-      -#%th{:id => "title_header", :class =>("release_date" == params[:sort]) ? "hilite" : nil}= link_to('Release Date',{:action => "index", :sort => 'release_date'})
-
-      %th{params[:sort] == "release_date" ? {:class => "hilite"} : {}}= link_to "Movie Title", movies_path(:sort => "release_date",:ratings => params[:ratings]), :id => "release_date_header"
+      
+      %th{params[:sort] == "release_date" ? {:class => "hilite"} : {}}= link_to "Movie Title", movies_path(:sort => "release_date", :ratings => params[:ratings]), :id => "release_date_header"
 
       %th More Info
   %tbody

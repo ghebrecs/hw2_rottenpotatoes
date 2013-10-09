@@ -1,3 +1,4 @@
+ 
 class MoviesController < ApplicationController
 
   def show
@@ -7,39 +8,67 @@ class MoviesController < ApplicationController
   end
 
   def index
-    
+    # instance variable of all_ratings 
     @all_ratings = ['G','PG','PG-13','R','NC-17']
+
+  #puts ("@@@@@@@@@@@@@@@@@@@@@@@@@@")  
+
+    if request.query_string.length > 0 # "" if the length is 
+
+      if params[:commit] then 
+
+        @ratings = params[:ratings] ? params[:ratings] : {}
+        @hilite = params[:sort]
+
+      else
+    
+        @ratings = params[:ratings] ?
+          params[:ratings] :
+          session[:filter] ? session[:filter] : {}
+        @hilite = params[:sort] ?
+          params[:sort] :
+          session[:sort] ? session[:sort] : nil
+    
+      end
+
+    else
+
+      @ratings = session[:filter] ? session[:filter] : {}
+      @hilite = session[:sort] ? session[:sort] : nil
+      redirect_to movies_path(@hilite, @ratings)
+    end
+
+    @selected = @ratings.keys
     @movies = []
-    @sort = params[:sort]
-    if params[:ratings] == nil 
 
-      @movies = Movie.all
+     # puts(@selected)
+     # puts("ssssssssssssssssssssss")
 
-    else 
-    
-      Movie.all.each { |m|  
+    @movies = case params[:sort]
 
-        if params[:ratings][m.rating] == "1" 
+    when "title" then
 
-          @movies << m   
-        
-        end 
-      }  
-
-    end 
-
-    if params[:sort] == "title"  
-      
-       @movies.sort!{|x,y| x.title.downcase <=> y.title.downcase}
-    
-    elsif params[:sort] == "release_date"
-    
-       @movies.sort!{|x,y| x.release_date <=> y.release_date}
-    
-    end 
-
-  end 
-
+      if @selected.empty? then
+        Movie.order("title ASC")
+      else
+        Movie.where(:rating => @selected).order("title ASC")
+      end
+    when "release_date" then
+      if @selected.empty? then
+        Movie.order("release_date ASC")
+      else
+        Movie.where(:rating => @selected).order("release_date ASC")
+      end
+    else
+      if @selected.empty? then
+        Movie.all
+      else
+        Movie.where(:rating => @selected)
+      end
+    end
+    session[:filter] = @selected.empty? ? nil : @ratings
+    session[:sort] = @hilite.nil? ? nil : @hilite 
+end 
 
   def new
     # default: render 'new' template
