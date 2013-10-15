@@ -36,7 +36,6 @@ class MoviesController < ApplicationController
       @ratings = session[:filter] ? session[:filter] : {}
       @hilite = session[:sort] ? session[:sort] : nil
       #puts("ssssssssssssssssssssssssss")
-
       redirect_to session[:go_to]  #movies_path(@hilite, @ratings)
     end
 
@@ -99,5 +98,4 @@ end
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
-
 end
