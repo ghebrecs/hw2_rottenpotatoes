@@ -28,14 +28,16 @@ class MoviesController < ApplicationController
         @hilite = params[:sort] ?
           params[:sort] :
           session[:sort] ? session[:sort] : nil
-    
+          session[:go_to] = request.url
       end
 
     else
 
       @ratings = session[:filter] ? session[:filter] : {}
       @hilite = session[:sort] ? session[:sort] : nil
-      #redirect_to movies_path(@hilite, @ratings)
+      #puts("ssssssssssssssssssssssssss")
+
+      redirect_to session[:go_to]  #movies_path(@hilite, @ratings)
     end
 
     @selected = @ratings.keys
@@ -79,7 +81,7 @@ end
     flash[:notice] = "#{@movie.title} was successfully created."
     redirect_to movies_path
   end
-
+  
   def edit
     @movie = Movie.find params[:id]
   end

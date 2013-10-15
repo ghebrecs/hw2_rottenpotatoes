@@ -1,13 +1,13 @@
 -#  This file is app/views/movies/index.html.haml
 %h1 All Movies
 
-= form_tag movies_path, :id => "ratings_form", :method => :get do 
+= form_tag movies_path, :method => :get do 
   Include: 
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", 1, params[:ratings] ? params[:ratings].include?(rating) : false
+    = check_box_tag "ratings[#{rating}]", "1", params[:ratings] ? params[:ratings].include?(rating) : false
   = hidden_field_tag(:sort,@sort)
-  = submit_tag "Refresh"
+  = submit_tag "Refresh", :id =>"ratings_form"
 
 
 
@@ -19,11 +19,11 @@
 
       %th Rating
       
-      %th{params[:sort] == "release_date" ? {:class => "hilite"} : {}}= link_to "Movie Title", movies_path(:sort => "release_date", :ratings => params[:ratings]), :id => "release_date_header"
+      %th{params[:sort] == "release_date" ? {:class => "hilite"} : {}}= link_to "Release Date", movies_path(:sort => "release_date", :ratings => params[:ratings]), :id => "release_date_header"
 
       %th More Info
   %tbody
-    - @movies.each do |movie|
+    - @movies.each do |movie|   # this is like a for loop(goes throu each movie that is in database array)
       %tr
         %td= movie.title 
         %td= movie.rating
