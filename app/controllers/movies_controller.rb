@@ -4,7 +4,6 @@
 #> [edx]: https://courses.edx.org/courses/BerkeleyX/CS-169.1x/2013_Summer/courseware/Week_3x/Homework_2/
 #> [youtube lecture]: http://www.youtube.com/watch?v=z0lf0o9cNdg
 #> class TA 
-#> my lab TA 
 
 class MoviesController < ApplicationController
 
