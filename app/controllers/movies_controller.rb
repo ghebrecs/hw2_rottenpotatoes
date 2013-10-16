@@ -1,3 +1,5 @@
+ #references
+# ----------
 #> [Ruby on Rail Tutorial by Michael Hurtl]: http://ruby.railstutorial.org/
 #> [edx]: https://courses.edx.org/courses/BerkeleyX/CS-169.1x/2013_Summer/courseware/Week_3x/Homework_2/
 #> [youtube lecture]: http://www.youtube.com/watch?v=z0lf0o9cNdg
@@ -42,7 +44,6 @@ class MoviesController < ApplicationController
       @hilite = session[:sort] ? session[:sort] : nil
       redirect_to session[:go_to]  #movies_path(@hilite, @ratings)
     end
-
     @movies = []
     @sort = params[:sort]
     
@@ -59,7 +60,6 @@ class MoviesController < ApplicationController
     elsif @sort == "release_date"
       @movies.sort!{|a, b| b.release_date <=> a.release_date}
     end
-    
 end 
 
   def new
