@@ -1,4 +1,9 @@
- 
+#> [Ruby on Rail Tutorial by Michael Hurtl]: http://ruby.railstutorial.org/
+#> [edx]: https://courses.edx.org/courses/BerkeleyX/CS-169.1x/2013_Summer/courseware/Week_3x/Homework_2/
+#> [youtube lecture]: http://www.youtube.com/watch?v=z0lf0o9cNdg
+#> class TA 
+#> my lab TA 
+
 class MoviesController < ApplicationController
 
   def show
@@ -28,47 +33,33 @@ class MoviesController < ApplicationController
         @hilite = params[:sort] ?
           params[:sort] :
           session[:sort] ? session[:sort] : nil
-          session[:go_to] = request.url
+          
       end
-
+      session[:go_to] = request.url
     else
 
       @ratings = session[:filter] ? session[:filter] : {}
       @hilite = session[:sort] ? session[:sort] : nil
-      #puts("ssssssssssssssssssssssssss")
       redirect_to session[:go_to]  #movies_path(@hilite, @ratings)
     end
 
-    @selected = @ratings.keys
     @movies = []
-
-     # puts(@selected)
-     # puts("ssssssssssssssssssssss")
-
-    @movies = case params[:sort]
-
-    when "title" then
-
-      if @selected.empty? then
-        Movie.order("title ASC")
-      else
-        Movie.where(:rating => @selected).order("title ASC")
-      end
-    when "release_date" then
-      if @selected.empty? then
-        Movie.order("release_date ASC")
-      else
-        Movie.where(:rating => @selected).order("release_date ASC")
-      end
-    else
-      if @selected.empty? then
-        Movie.all
-      else
-        Movie.where(:rating => @selected)
-      end
+    @sort = params[:sort]
+    
+    #@all_ratings = ["G", "PG", "PG-13", "R", "NC-17"]
+    if !params[:ratings].nil?
+      Movie.all.each { |value|
+        if params[:ratings][value.rating] == "1"
+          @movies << value
+        end
+      }
     end
-    session[:filter] = @selected.empty? ? nil : @ratings
-    session[:sort] = @hilite.nil? ? nil : @hilite 
+    if @sort == "title"
+      @movies.sort!{|a, b| a.title.downcase <=> b.title.downcase}
+    elsif @sort == "release_date"
+      @movies.sort!{|a, b| b.release_date <=> a.release_date}
+    end
+    
 end 
 
   def new
